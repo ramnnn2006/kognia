@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import HeatmapGrid from "../../../components/HeatmapGrid";
+import HeatmapGrid from "../../../../components/HeatmapGrid";
 import { motion } from "framer-motion";
 import { Activity, ShieldAlert, Fingerprint, TrendingUp, Users, Clock } from "lucide-react";
 

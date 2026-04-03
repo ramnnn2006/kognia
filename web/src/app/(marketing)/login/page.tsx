@@ -8,6 +8,11 @@ import { GraduationCap, Users, ShieldAlert, ArrowRight, Fingerprint, Lock, Globe
 export default function LoginHub() {
   const router = useRouter();
 
+  React.useEffect(() => {
+    const stored = localStorage.getItem("vtop_session");
+    if (stored) router.push("/login/student");
+  }, []);
+
   const portals = [
     {
       role: "Student",

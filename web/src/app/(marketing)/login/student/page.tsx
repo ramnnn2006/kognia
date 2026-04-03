@@ -168,7 +168,7 @@ export default function VtopLoginPage() {
             className="glass-card p-12 rounded-[3.5rem] w-full max-w-2xl border-primary/20 bg-primary/[0.02] relative overflow-hidden"
           >
             {/* Success Glow */}
-            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-transparent pointer-none" />
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-transparent pointer-events-none" />
 
             <div className="flex items-center space-x-6 mb-10 pb-10 border-b border-white/5">
                 <div className="w-16 h-16 rounded-2xl bg-green-500/10 border border-green-500/20 flex items-center justify-center text-green-400 shadow-[0_0_40px_rgba(34,197,94,0.1)]">
@@ -187,15 +187,15 @@ export default function VtopLoginPage() {
                             {session.student_name?.[0]}
                         </div>
                         <div>
-                            <h3 className="font-headline text-2xl italic tracking-tight text-primary-light">{session.student_name}</h3>
-                            <p className="text-[11px] opacity-40 uppercase tracking-[0.2em] font-bold">{session.reg_no}</p>
+                            <h3 className="font-headline text-2xl italic tracking-tight text-primary-light">{session.student_name || 'Sanctuary Node'}</h3>
+                            <p className="text-[11px] opacity-40 uppercase tracking-[0.2em] font-bold">{session.register_number || session.reg_no || '24BAIXXXX'}</p>
                         </div>
                     </div>
 
                     <div className="space-y-4">
                         {[
-                            { icon: Mail, label: session.vit_email },
-                            { icon: Home, label: `${session.hostel_block} (Room ${session.room_no})` },
+                            { icon: Mail, label: session.vit_email_id || session.vit_email },
+                            { icon: Home, label: `${session.hostel_block || 'N/A'} (Room ${session.room_no || 'N/A'})` },
                             { icon: GraduationCap, label: session.school }
                         ].map((item, i) => (
                             <div key={i} className="flex items-center space-x-4 group">
@@ -239,7 +239,7 @@ export default function VtopLoginPage() {
 
             <div className="mt-12 pt-8 border-t border-white/5 flex space-x-6">
                 <button 
-                    onClick={() => router.push("/dashboard/warden")}
+                    onClick={() => router.push("/dashboard/student")}
                     className="flex-[2] bg-primary/90 text-white font-bold py-6 rounded-2xl flex items-center justify-center space-x-4 hover:shadow-[0_0_50px_rgba(var(--primary-rgb),0.3)] hover:-translate-y-0.5 transition-all duration-300 uppercase tracking-[0.3em] text-[11px]"
                 >
                     <span>Sanctuary Terminal</span>

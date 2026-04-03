@@ -1,0 +1,55 @@
+@import "tailwindcss";
+
+@theme {
+    /* Define Custom Fonts */
+    --font-newsreader: "Newsreader", serif;
+    --font-manrope: "Manrope", sans-serif;
+    
+    /* Map to named classes */
+    --font-headline: var(--font-newsreader);
+    --font-body: var(--font-manrope);
+
+    /* Original Cognia Color Palette */
+    --color-primary: #7c3aed;
+    --color-primary-container: rgba(124, 58, 237, 0.1);
+    --color-secondary: #4cd7f6;
+    --color-tertiary: #5af5c0;
+    --color-error: #ffb4ab;
+    --color-background: #050505;
+    --color-on-surface: #e5e2e1;
+    --color-on-surface-variant: #938f99;
+    --color-surface-container-high: #2b2930;
+}
+
+:root {
+  background: var(--color-background);
+  color: var(--color-on-surface);
+}
+
+body {
+  @apply font-body selection:bg-primary-container selection:text-white antialiased;
+}
+
+@layer components {
+  .glass-card {
+    @apply bg-white/[0.03] backdrop-blur-xl border border-white/10;
+  }
+  
+  .razor-divider {
+    @apply h-[1px] w-full;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+  }
+
+  .nav-link {
+    @apply text-[10px] uppercase tracking-[0.2em] font-bold text-on-surface-variant hover:text-primary transition-all duration-300;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}

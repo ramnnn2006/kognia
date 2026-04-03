@@ -1,0 +1,36 @@
+# Cognia: Root Gitignore
+
+# Next.js / Web
+web/.next/
+web/node_modules/
+web/.env.local
+web/.env.production.local
+web/out/
+web/build/
+
+# Backend (Python)
+backend/venv/
+backend/__pycache__/
+backend/*.pyc
+backend/.env
+backend/database.db
+backend/init_db.py
+
+# Android
+android/.gradle/
+android/build/
+android/app/build/
+android/local.properties
+android/*.iml
+android/.idea/
+
+# General IDEs
+.idea/
+.vscode/
+*.swp
+*.log
+
+# Project Specific
+.gemini/
+*.tmp
+temp/

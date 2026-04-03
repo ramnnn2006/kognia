@@ -11,6 +11,7 @@ class VtopLoginRequest(BaseModel):
     uname: str
     passwd: str
     captcha: str
+    csrf_token: str
     cookies: Dict[str, str]
 
 app = FastAPI(title="Cognia — Backend")
@@ -52,14 +53,14 @@ async def get_heatmap(db: AsyncSession = Depends(database.get_db)):
 @app.get("/api/v1/auth/vtop/captcha")
 async def get_captcha():
     try:
-        return await vtop_service.get_vtop_captcha()
+        return await vtop_service.get_vtop_captcha_setup()
     except Exception as e:
         raise HTTPException(status_code=503, detail=f"VTOP Handshake Failed: {str(e)}")
 
 @app.post("/api/v1/auth/vtop/login")
 async def vtop_login(details: VtopLoginRequest):
     try:
-        return await vtop_service.perform_vtop_login(details.uname, details.passwd, details.captcha, details.cookies)
+        return await vtop_service.perform_vtop_login(details.uname, details.passwd, details.captcha, details.csrf_token, details.cookies)
     except Exception as e:
         raise HTTPException(status_code=401, detail=f"VTOP Login Failed: {str(e)}")
 

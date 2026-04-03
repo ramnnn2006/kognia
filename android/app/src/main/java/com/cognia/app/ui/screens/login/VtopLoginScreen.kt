@@ -34,6 +34,7 @@ fun VtopLoginScreen(onLoginSuccess: (JSONObject) -> Unit) {
     var passwd by remember { mutableStateOf("") }
     var captchaInput by remember { mutableStateOf("") }
     var captchaB64 by remember { mutableStateOf("") }
+    var csrfToken by remember { mutableStateOf("") }
     var cookies by remember { mutableStateOf<JSONObject?>(null) }
     var loading by remember { mutableStateOf(false) }
     var error by remember { mutableStateOf("") }
@@ -49,6 +50,7 @@ fun VtopLoginScreen(onLoginSuccess: (JSONObject) -> Unit) {
                 val response = client.newCall(request).execute()
                 val json = JSONObject(response.body!!.string())
                 captchaB64 = json.getString("captcha")
+                csrfToken = json.getString("csrf_token")
                 cookies = json.getJSONObject("cookies")
             } catch (e: Exception) {
                 error = "VTOP Offline"
@@ -137,6 +139,7 @@ fun VtopLoginScreen(onLoginSuccess: (JSONObject) -> Unit) {
                         body.put("uname", uname)
                         body.put("passwd", passwd)
                         body.put("captcha", captchaInput)
+                        body.put("csrf_token", csrfToken)
                         body.put("cookies", cookies)
                         
                         val request = Request.Builder()

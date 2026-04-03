@@ -34,3 +34,5 @@ android/.idea/
 .gemini/
 *.tmp
 temp/
+
+node_modules

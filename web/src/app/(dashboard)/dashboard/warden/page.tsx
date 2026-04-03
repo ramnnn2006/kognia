@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import HeatmapGrid from "../components/HeatmapGrid";
+import HeatmapGrid from "../../../components/HeatmapGrid";
 import { motion } from "framer-motion";
 import { Activity, ShieldAlert, Fingerprint, TrendingUp, Users, Clock } from "lucide-react";
 
@@ -59,7 +59,7 @@ export default function Dashboard() {
       {/* Header Section */}
       <header className="flex justify-between items-end">
         <div className="space-y-2">
-          <h1 className="font-headline text-5xl italic tracking-tight">Executive Summary</h1>
+          <h1 className="font-headline text-5xl italic tracking-tight text-on-surface">Executive Summary</h1>
           <p className="text-[10px] uppercase tracking-[0.4em] opacity-30">Real-time Institutional Behavioral Metrics</p>
         </div>
         <div className="flex space-x-4">
@@ -81,19 +81,19 @@ export default function Dashboard() {
         <div className="glass-card p-10 rounded-2xl flex flex-col justify-between h-48">
           <div className="flex justify-between h-full flex-col">
             <span className="text-[10px] font-bold uppercase tracking-[0.3em] opacity-40">Sleep Quality Avg</span>
-            <span className="font-headline text-5xl italic">6.4<span className="text-xl opacity-30 ml-2">HOURS</span></span>
+            <span className="font-headline text-5xl italic">6.4<span className="text-xl opacity-30 ml-2 text-on-surface/40 uppercase">HOURS</span></span>
           </div>
         </div>
         <div className="glass-card p-10 rounded-2xl flex flex-col justify-between h-48 border-tertiary/10">
           <div className="flex justify-between h-full flex-col">
             <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-tertiary/60">Activity Index</span>
-            <span className="font-headline text-5xl italic text-tertiary">84<span className="text-xl opacity-30 ml-2">STEPS %</span></span>
+            <span className="font-headline text-5xl italic text-tertiary">84<span className="text-xl opacity-30 ml-2 uppercase text-tertiary/40">STEPS %</span></span>
           </div>
         </div>
         <div className="glass-card p-10 rounded-2xl border-error/10 flex flex-col justify-between h-48">
           <div className="flex justify-between h-full flex-col text-error">
             <span className="text-[10px] font-bold uppercase tracking-[0.3em] opacity-60">High-Risk Signals</span>
-            <span className="font-headline text-5xl italic">03<span className="text-xl opacity-30 ml-2 text-error/30">ROOMS</span></span>
+            <span className="font-headline text-5xl italic">03<span className="text-xl opacity-30 ml-2 text-error/30 uppercase">ROOMS</span></span>
           </div>
         </div>
       </section>
@@ -103,7 +103,7 @@ export default function Dashboard() {
         <div className="lg:col-span-3 space-y-6">
           <div className="flex items-center space-x-3 mb-2">
              <Activity className="w-4 h-4 text-primary" />
-             <h2 className="text-[11px] font-bold uppercase tracking-widest">Active Welfare Heatmap</h2>
+             <h2 className="text-[11px] font-bold uppercase tracking-widest text-on-surface/80">Active Welfare Heatmap</h2>
           </div>
           
           {/* Identity Grid: Behavioral vs. Biological */}
@@ -149,36 +149,36 @@ export default function Dashboard() {
                 {/* Dossier Deep-Sync Sections */}
                 <div className="mt-6 pt-6 border-t border-white/10 space-y-6">
                    <div>
-                      <h5 className="text-[9px] uppercase tracking-widest opacity-30 mb-3 border-l border-primary pl-2">Kinship Nodes</h5>
+                      <h5 className="text-[9px] uppercase tracking-widest opacity-30 mb-3 border-l border-primary pl-2 italic">Kinship Nodes</h5>
                       <div className="grid grid-cols-2 gap-4">
                          <div className="bg-white/5 p-2 rounded-lg">
-                            <span className="text-[8px] uppercase opacity-40 block">Father</span>
+                            <span className="text-[8px] uppercase opacity-40 block mb-1">Father</span>
                             <span className="text-[10px] font-bold truncate block">{session.father_name || 'N/A'}</span>
                          </div>
                          <div className="bg-white/5 p-2 rounded-lg">
-                            <span className="text-[8px] uppercase opacity-40 block">Mother</span>
+                            <span className="text-[8px] uppercase opacity-40 block mb-1">Mother</span>
                             <span className="text-[10px] font-bold truncate block">{session.mother_name || 'N/A'}</span>
                          </div>
                       </div>
                    </div>
 
                    <div>
-                      <h5 className="text-[9px] uppercase tracking-widest opacity-30 mb-3 border-l border-tertiary pl-2">Institutional & Hoste Geo</h5>
+                      <h5 className="text-[9px] uppercase tracking-widest opacity-30 mb-3 border-l border-tertiary pl-2 italic">Institutional Geo</h5>
                       <div className="grid grid-cols-2 gap-4">
                          <div>
-                            <span className="text-[8px] uppercase opacity-40 block">Native State</span>
+                            <span className="text-[8px] uppercase opacity-40 block mb-1">Native State</span>
                             <span className="text-[10px] opacity-80">{session.native_state || 'N/A'}</span>
                          </div>
                          <div>
-                            <span className="text-[8px] uppercase opacity-40 block">Bed Node</span>
+                            <span className="text-[8px] uppercase opacity-40 block mb-1">Bed Node</span>
                             <span className="text-[10px] opacity-80">{session.bed_type || 'N/A'}</span>
                          </div>
                       </div>
                    </div>
 
-                   {/* Proctor / Institutional Liaison */}
+                   {/* Liaison Contact */}
                    <div>
-                        <h5 className="text-[9px] uppercase tracking-widest opacity-30 mb-3 border-l border-secondary pl-2">Liaison Contact</h5>
+                        <h5 className="text-[9px] uppercase tracking-widest opacity-30 mb-3 border-l border-secondary pl-2 italic">Liaison Contact</h5>
                         <div className="p-2 bg-secondary/5 rounded border border-secondary/10">
                             <div className="flex justify-between items-center">
                                 <span className="text-[10px] font-bold text-secondary">{session.proctor_name}</span>
@@ -188,52 +188,6 @@ export default function Dashboard() {
                             <span className="text-[8px] opacity-30 block mt-0.5">{session.proctor_designation}</span>
                         </div>
                    </div>
-
-                   {/* UniCC Style Attendance Scrape */}
-                   {session.attendance && session.attendance.length > 0 && (
-                   <div>
-                      <h5 className="text-[9px] uppercase tracking-widest opacity-30 mb-3 border-l border-green-500 pl-2">Academic Resonance</h5>
-                      <div className="space-y-2 max-h-48 overflow-y-auto pr-2 custom-scrollbar">
-                         {session.attendance.map((course: any, idx: number) => (
-                            <div key={idx} className="bg-white/[0.02] p-2 rounded border border-white/5">
-                               <div className="flex justify-between items-center mb-1">
-                                    <span className="text-[9px] font-bold opacity-80">{course.title}</span>
-                                    <span className={`text-[10px] font-bold ${parseInt(course.percentage) < 75 ? 'text-error' : 'text-green-400'}`}>
-                                        {course.percentage}
-                                    </span>
-                               </div>
-                               <span className="text-[8px] opacity-40 uppercase tracking-tighter">{course.code}</span>
-                            </div>
-                         ))}
-                      </div>
-                   </div>
-                   )}
-
-                   {/* Course Marks (Advanced Pulse) */}
-                   {session.marks && session.marks.length > 0 && (
-                    <div>
-                        <h5 className="text-[9px] uppercase tracking-widest opacity-30 mb-3 border-l border-primary pl-2">Performance Pulse</h5>
-                        <div className="grid grid-cols-2 gap-2 max-h-40 overflow-y-auto pr-2 custom-scrollbar">
-                            {session.marks.map((course: any, idx: number) => (
-                                <div key={idx} className="bg-white/[0.02] p-2 rounded border border-white/5">
-                                    <span className="text-[8px] opacity-40 block">{course.code}</span>
-                                    <span className="text-[10px] font-bold text-primary">{course.mark} / 100</span>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                   )}
-
-                   <div className="p-3 bg-white/[0.02] rounded-lg border border-white/5">
-                      <span className="text-[8px] uppercase opacity-40 block mb-1">Previous Institution Profile</span>
-                      <span className="text-[10px] italic opacity-60 leading-tight block">{session.last_school}</span>
-                   </div>
-                </div>
-                
-                <div className="mt-8 pt-4 border-t border-primary/20">
-                    <p className="text-[10px] opacity-40 leading-relaxed italic">
-                      "Bio-telemetry synced directly from VTOP mainframe for psychiatric baseline anchoring."
-                    </p>
                 </div>
               </motion.div>
               )}
@@ -272,54 +226,6 @@ export default function Dashboard() {
                ))}
              </div>
              <button className="w-full py-4 text-[9px] font-bold uppercase tracking-[0.3em] border border-white/5 rounded-xl opacity-30 hover:opacity-100 transition-all">View All Triage</button>
-          </div>
-        </div>
-      </section>
-
-      {/* Trend & Logs Row */}
-      <section className="grid grid-cols-1 lg:grid-cols-2 gap-8 pb-24">
-        {/* Module: Institutional Trends */}
-        <div className="space-y-6">
-           <div className="flex items-center space-x-3 mb-2 text-tertiary">
-             <TrendingUp className="w-4 h-4" />
-             <h2 className="text-[11px] font-bold uppercase tracking-widest">Campus Behavioral Trend</h2>
-          </div>
-          <div className="glass-card rounded-2xl p-10 h-64 flex items-end justify-between space-x-4">
-             {/* Simple Peak Chart representation using CSS bars */}
-             {[40, 60, 45, 90, 65, 80, 55, 40, 70, 85].map((h, i) => (
-               <div key={i} className="flex-1 flex flex-col items-center group">
-                 <motion.div 
-                   initial={{ height: 0 }} animate={{ height: `${h}%` }} transition={{ duration: 1, delay: i * 0.1 }}
-                   className={`w-full rounded-t-sm transition-all duration-500 group-hover:opacity-100 ${h > 70 ? 'bg-error/40' : 'bg-primary/20 opacity-40'}`}
-                 />
-                 <span className="text-[8px] opacity-20 font-bold mt-4 uppercase tracking-tighter group-hover:opacity-100 italic transition-opacity">{10 + i}:00</span>
-               </div>
-             ))}
-          </div>
-        </div>
-
-        {/* Module: Identity Audit Log */}
-        <div className="space-y-6">
-           <div className="flex items-center space-x-3 mb-2 text-on-surface-variant">
-             <Fingerprint className="w-4 h-4" />
-             <h2 className="text-[11px] font-bold uppercase tracking-widest">Hash Sync Audit Log</h2>
-          </div>
-          <div className="glass-card rounded-2xl p-8 h-64 overflow-hidden relative">
-             <div className="space-y-3 opacity-30">
-               {[
-                 "SHA256: 7f83...2a8b synced stress_index: 42 to ROOM B-3-10",
-                 "SHA256: e81c...91f0 synced stress_index: 88 to ROOM B-3-37 [High Risk]",
-                 "SHA256: 4a2d...bb12 synced social_ratio: 0.2 to ROOM A-1-08",
-                 "SHA256: 99f1...cc34 synced sleep_latency: 240m to ROOM B-2-19",
-                 "SHA256: 12ab...ffee synced physical_activity: 0.1 to ROOM C-4-02"
-               ].map((log, i) => (
-                 <div key={i} className="text-[10px] font-mono tracking-tight font-medium border-b border-white/5 pb-2 truncate">
-                   <span className="text-secondary/60">[{mounted ? new Date().toLocaleTimeString() : 'SYNC'}]</span> {log}
-                 </div>
-               ))}
-             </div>
-             {/* Fade gradient for logs */}
-             <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-background to-transparent" />
           </div>
         </div>
       </section>

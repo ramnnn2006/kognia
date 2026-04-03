@@ -74,6 +74,8 @@ dependencies {
     implementation(libs.room.runtime)
     ksp(libs.room.compiler)
     implementation(libs.room.ktx)
+    implementation(libs.androidx.health.connect)
+    implementation(libs.google.play.services.auth)
     implementation(libs.gson)
     implementation(libs.generativeai)
     debugImplementation(libs.androidx.ui.tooling)

@@ -121,14 +121,16 @@ fun HomeScreen(navController: NavController, viewModel: MainViewModel = hiltView
                         Column(modifier = Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                             Icon(Icons.Default.DirectionsWalk, null, tint = Primary, modifier = Modifier.size(20.dp))
                             Text("STEPS", style = MaterialTheme.typography.labelSmall, color = OnSurface.copy(alpha = 0.5f))
-                            Text("4,821", style = MaterialTheme.typography.headlineSmall, color = OnSurface)
+                            Text(String.format("%,d", uiState.steps), style = MaterialTheme.typography.headlineSmall, color = OnSurface)
                         }
                     }
                     GlassCard(modifier = Modifier.weight(1f)) {
                         Column(modifier = Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                             Icon(Icons.Default.DarkMode, null, tint = Secondary, modifier = Modifier.size(20.dp))
                             Text("SLEEP", style = MaterialTheme.typography.labelSmall, color = OnSurface.copy(alpha = 0.5f))
-                            Text("6h 12m", style = MaterialTheme.typography.headlineSmall, color = OnSurface)
+                            val h = uiState.sleepHours.toInt()
+                            val m = ((uiState.sleepHours - h) * 60).toInt()
+                            Text("${h}h ${m}m", style = MaterialTheme.typography.headlineSmall, color = OnSurface)
                         }
                     }
                 }

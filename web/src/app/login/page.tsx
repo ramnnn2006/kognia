@@ -10,6 +10,7 @@ export default function VtopLoginPage() {
   const [passwd, setPasswd] = useState("");
   const [captchaInput, setCaptchaInput] = useState("");
   const [captchaImg, setCaptchaImg] = useState("");
+  const [csrfToken, setCsrfToken] = useState("");
   const [cookies, setCookies] = useState<any>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -19,6 +20,7 @@ export default function VtopLoginPage() {
       const res = await fetch("http://localhost:8000/api/v1/auth/vtop/captcha");
       const data = await res.json();
       setCaptchaImg(data.captcha);
+      setCsrfToken(data.csrf_token);
       setCookies(data.cookies);
     } catch (err) {
       setError("Failed to reach VTOP Server. Is it down?");
@@ -42,6 +44,7 @@ export default function VtopLoginPage() {
           uname,
           passwd,
           captcha: captchaInput,
+          csrf_token: csrfToken,
           cookies,
         }),
       });

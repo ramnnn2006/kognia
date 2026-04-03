@@ -34,7 +34,9 @@ def get_google_auth_url():
     return authorization_url, state
 
 async def get_google_fit_data(credentials_dict: Dict[str, Any]):
-    creds = Credentials.from_authorized_user_info(credentials_dict, SCOPES)
+    # Force direct API fetch using the OAuth Access Token
+    creds = Credentials(token=credentials_dict.get("token"))
+
     fitness = build('fitness', 'v1', credentials=creds)
     
     # 1. Fetch Steps
@@ -104,7 +106,7 @@ async def get_google_fit_data(credentials_dict: Dict[str, Any]):
     }
 
 async def get_google_calendar_events(credentials_dict: Dict[str, Any]):
-    creds = Credentials.from_authorized_user_info(credentials_dict, SCOPES)
+    creds = Credentials(token=credentials_dict.get("token"))
     service = build('calendar', 'v3', credentials=creds)
     
     now = datetime.datetime.utcnow().isoformat() + 'Z'

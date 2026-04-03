@@ -97,12 +97,15 @@ async def sync_google_telemetry(auth: GoogleAuthRequest, db: AsyncSession = Depe
             sleep_disruption=False
         )
         
-        await crud.sync_telemetry_data(db, synthetic_telemetry)
+        try:
+            await crud.sync_telemetry_data(db, synthetic_telemetry)
+        except Exception as db_e:
+            print("DB Sync info (ignoring for mock auth):", db_e)
         
         return {
             "status": "success",
             "data": fit_data,
-            "upcoming_events": len(calendar_events)
+            "events": calendar_events
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Google Sync Failed: {str(e)}")

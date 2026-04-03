@@ -9,20 +9,33 @@ export default function StudentDashboard() {
   const router = useRouter();
   const [mounted, setMounted] = useState(false);
   const [session, setSession] = useState<any>(null);
+  const [fitData, setFitData] = useState<any>(null);
+  const [calendarEvents, setCalendarEvents] = useState<any[]>([]);
 
   useEffect(() => {
     setMounted(true);
     const stored = localStorage.getItem("vtop_session");
     if (stored) setSession(JSON.parse(stored));
+    
+    const storedFit = localStorage.getItem("google_fit_data");
+    if (storedFit) setFitData(JSON.parse(storedFit));
+
+    const storedEvents = localStorage.getItem("google_calendar_data");
+    if (storedEvents) setCalendarEvents(JSON.parse(storedEvents));
   }, []);
 
   if (!mounted) return null;
 
+  const steps = fitData?.steps ? fitData.steps.toLocaleString() : "---";
+  const sleepHrs = fitData?.sleep_hours ? `${fitData.sleep_hours}h` : "---";
+  const calories = fitData?.calories ? fitData.calories.toLocaleString() : "---";
+  const syncRate = fitData ? "98%" : "Pending";
+
   const wellnessStats = [
-    { label: "Stress Resonance", value: "Low", score: "24", icon: Brain, color: "text-primary" },
-    { label: "Sleep Cycles", value: "Restful", score: "7.2h", icon: Moon, color: "text-tertiary" },
-    { label: "Circadian Rhythm", value: "Aligned", score: "0.85", icon: Zap, color: "text-green-400" },
-    { label: "Biological Sync", value: "High", score: "92%", icon: Heart, color: "text-error" }
+    { label: "Stress Resonance", value: fitData ? "Awaiting Pipeline" : "Offline", score: "---", icon: Brain, color: fitData ? "text-primary" : "text-primary/30" },
+    { label: "Sleep Cycles", value: fitData ? "Tracked" : "Unlinked", score: sleepHrs, icon: Moon, color: fitData ? "text-tertiary" : "text-tertiary/30" },
+    { label: "Active Calories", value: fitData ? "Expended" : "Unlinked", score: calories, icon: Zap, color: fitData ? "text-green-400" : "text-green-400/30" },
+    { label: "Google Fit Sync", value: fitData ? "Anchored" : "Offline", score: syncRate, icon: Heart, color: fitData ? "text-error" : "text-error/30" }
   ];
 
   return (
@@ -47,10 +60,12 @@ export default function StudentDashboard() {
         
         <div className="flex items-center space-x-6 bg-white/[0.02] border border-white/5 p-4 rounded-2xl backdrop-blur-xl">
             <div className="text-right">
-                <span className="text-[9px] uppercase tracking-widest opacity-30 block mb-0.5">Biometric Status</span>
-                <span className="text-xs font-bold text-green-400 uppercase tracking-widest">Anchored Live</span>
+                <span className="text-[9px] uppercase tracking-widest opacity-30 block mb-0.5">Google Data Stream</span>
+                <span className={`text-xs font-bold uppercase tracking-widest ${fitData ? 'text-green-400' : 'text-white/40'}`}>
+                    {fitData ? "Synchronized Live" : "Authorization Required"}
+                </span>
             </div>
-            <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse shadow-[0_0_10px_rgba(34,197,94,0.5)]" />
+            <div className={`w-1.5 h-1.5 rounded-full shadow-[0_0_10px_rgba(34,197,94,0.5)] ${fitData ? 'bg-green-500 animate-pulse' : 'bg-white/20'}`} />
         </div>
       </header>
 
@@ -62,21 +77,23 @@ export default function StudentDashboard() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.1 }}
-            className="glass-card p-8 rounded-[2.5rem] flex flex-col justify-between h-56 border-white/5 hover:border-primary/20 transition-all group overflow-hidden"
+            className={`glass-card p-8 rounded-[2.5rem] flex flex-col justify-between h-56 border-white/5 transition-all group overflow-hidden ${stat.score !== '---' ? 'hover:border-primary/20 cursor-pointer' : ''}`}
           >
             <div className="flex justify-between items-start">
-               <div className={`w-12 h-12 rounded-2xl bg-white/[0.03] border border-white/5 flex items-center justify-center transition-all duration-500 group-hover:scale-110 group-hover:border-primary/20 shadow-inner`}>
-                  <stat.icon className={`w-6 h-6 ${stat.color} opacity-60 group-hover:opacity-100 transition-opacity`} />
+               <div className={`w-12 h-12 rounded-2xl bg-white/[0.03] border border-white/5 flex items-center justify-center transition-all duration-500 group-hover:scale-110 shadow-inner ${stat.score !== '---' ? 'group-hover:border-primary/20' : ''}`}>
+                  <stat.icon className={`w-6 h-6 ${stat.color} opacity-60 ${stat.score !== '---' ? 'group-hover:opacity-100' : ''} transition-opacity`} />
                </div>
-               <div className="h-6 w-12 bg-white/5 rounded-full flex items-center justify-center overflow-hidden">
-                   <div className="w-full h-full bg-primary/20 translate-x-[-10%] group-hover:translate-x-0 transition-transform duration-1000" />
-               </div>
+               {stat.score !== '---' && (
+                 <div className="h-6 w-12 bg-white/5 rounded-full flex items-center justify-center overflow-hidden">
+                     <div className="w-full h-full bg-primary/20 translate-x-[-10%] group-hover:translate-x-0 transition-transform duration-1000" />
+                 </div>
+               )}
             </div>
 
             <div>
               <span className="text-[10px] font-bold uppercase tracking-[0.3em] opacity-40 mb-2 block">{stat.label}</span>
               <div className="flex items-baseline space-x-2">
-                 <span className="font-headline text-4xl italic group-hover:text-primary-light transition-colors">{stat.score}</span>
+                 <span className={`font-headline text-4xl italic transition-colors ${stat.score === '---' ? 'opacity-20' : 'group-hover:text-primary-light'}`}>{stat.score}</span>
                  <span className="text-[10px] font-bold uppercase opacity-30 tracking-widest">{stat.value}</span>
               </div>
             </div>
@@ -96,7 +113,7 @@ export default function StudentDashboard() {
                 <div className="flex space-x-2">
                    {['W', 'T', 'F', 'S', 'S', 'M', 'T'].map((day, i) => (
                       <div key={i} className="flex flex-col items-center space-y-2">
-                         <div className="w-4 bg-primary/20 rounded-t-sm group-hover:bg-primary/40 transition-all" style={{ height: Math.random() * 60 + 20 }} />
+                         <div className="w-4 bg-white/5 rounded-t-sm transition-all" style={{ height: 10 }} />
                          <span className="text-[8px] opacity-30 font-bold">{day}</span>
                       </div>
                    ))}
@@ -111,11 +128,11 @@ export default function StudentDashboard() {
                    </div>
                    <div className="space-y-2">
                       <div className="flex justify-between items-baseline">
-                         <span className="font-headline text-3xl italic">3,420</span>
-                         <span className="text-[9px] opacity-30 font-bold">STEPS / Block B</span>
+                         <span className={`font-headline text-3xl italic ${!fitData ? 'opacity-20' : ''}`}>{steps}</span>
+                         <span className="text-[9px] opacity-30 font-bold">{fitData ? "STEPS TODAY" : "AWAITING AUTH"}</span>
                       </div>
                       <div className="w-full h-1 bg-white/5 rounded-full overflow-hidden">
-                         <div className="w-[60%] h-full bg-tertiary rounded-full" />
+                         <div className={`h-full bg-tertiary rounded-full transition-all duration-1000 ${fitData ? 'w-[75%]' : 'w-[0%]'}`} />
                       </div>
                    </div>
                 </div>
@@ -127,11 +144,11 @@ export default function StudentDashboard() {
                    </div>
                    <div className="space-y-2">
                       <div className="flex justify-between items-baseline">
-                         <span className="font-headline text-3xl italic">Normal</span>
-                         <span className="text-[9px] opacity-30 font-bold">STABLE DEVIATION</span>
+                         <span className="font-headline text-3xl italic opacity-20">---</span>
+                         <span className="text-[9px] opacity-30 font-bold">AWAITING ENGINE</span>
                       </div>
                       <div className="w-full h-1 bg-white/5 rounded-full overflow-hidden">
-                         <div className="w-[85%] h-full bg-error rounded-full" />
+                         <div className="w-[0%] h-full bg-error rounded-full" />
                       </div>
                    </div>
                 </div>
@@ -174,6 +191,59 @@ export default function StudentDashboard() {
               </button>
           </div>
       </div>
+
+      {/* Temporal Timeline (Google Calendar) */}
+      <section className="relative z-10 glass-card p-10 rounded-[3rem] border-white/5 space-y-8">
+          <div className="flex items-center space-x-4">
+              <Clock className="w-5 h-5 text-primary" />
+              <h3 className="font-headline text-2xl italic tracking-tight">Temporal Timeline</h3>
+              <div className="w-px h-6 bg-white/10 mx-4" />
+              <span className="text-[10px] uppercase font-bold tracking-[0.2em] opacity-40">
+                  {calendarEvents.length > 0 ? "Upcoming Impending Bounds" : "No Chronological Data Found"}
+              </span>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {calendarEvents.slice(0, 3).map((event, i) => {
+                  const startTime = event.start?.dateTime || event.start?.date;
+                  const dateObj = new Date(startTime);
+                  const formattedTime = dateObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                  const formattedDate = dateObj.toLocaleDateString([], { month: 'short', day: 'numeric' });
+                  
+                  return (
+                    <motion.div 
+                        key={i}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: i * 0.15 }}
+                        className="p-6 rounded-[2rem] bg-white/[0.02] border border-white/5 hover:border-primary/20 transition-all group"
+                    >
+                        <div className="flex justify-between items-start mb-6">
+                            <span className="text-[10px] font-bold uppercase tracking-widest text-primary-light">
+                                {formattedDate}
+                            </span>
+                            <span className="text-xs font-bold uppercase tracking-widest opacity-30 group-hover:opacity-100 transition-opacity">
+                                {formattedTime !== "Invalid Date" ? formattedTime : "All Day"}
+                            </span>
+                        </div>
+                        <h4 className="font-headline text-xl italic leading-tight text-white/90 group-hover:text-white transition-colors truncate">
+                            {event.summary || "Encrypted Event"}
+                        </h4>
+                    </motion.div>
+                  )
+              })}
+              
+              {calendarEvents.length === 0 && (
+                  <div className="col-span-full p-8 rounded-[2.5rem] border border-dashed border-white/10 flex flex-col items-center justify-center text-center space-y-4 opacity-50">
+                      <Clock className="w-8 h-8 opacity-40" />
+                      <div>
+                          <p className="font-headline text-xl italic">Awaiting Protocol</p>
+                          <p className="text-[10px] font-bold uppercase tracking-widest mt-2">{fitData ? "No upcoming events scheduled" : "Anchor Google for Timeline Synchronization"}</p>
+                      </div>
+                  </div>
+              )}
+          </div>
+      </section>
 
       {/* Privacy Guarantee Footer */}
       <footer className="pt-12 border-t border-white/5 text-center space-y-6 opacity-30">

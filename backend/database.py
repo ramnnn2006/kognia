@@ -7,11 +7,15 @@ load_dotenv()
 
 DATABASE_URL = os.getenv("DATABASE_URL", "")
 
+connect_args = {}
+if not DATABASE_URL.startswith("sqlite"):
+    connect_args["ssl"] = True
+
 engine = create_async_engine(
     DATABASE_URL, 
     echo=False, 
     pool_pre_ping=True,
-    connect_args={"ssl": True}
+    connect_args=connect_args
 )
 AsyncSessionLocal = async_sessionmaker(engine, expire_on_commit=False, class_=AsyncSession)
 
